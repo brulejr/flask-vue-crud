@@ -3,7 +3,7 @@ from flask_cors import CORS
 import uuid
 
 from app import app
-from .books import BOOKS, remove_book
+from app.services import BOOKS, remove_book
 
 
 # enable CORS
