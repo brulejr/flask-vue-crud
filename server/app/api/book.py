@@ -1,7 +1,7 @@
 from flask_restplus import Resource, fields
 
 from . import api, book_ns
-from app.services import books, BookNotFoundException
+from app.services import book_service, BookNotFoundException
 
 
 book = api.model('Book', {
@@ -27,7 +27,7 @@ class BookList(Resource):
     @api.doc(description='Get a list of books')
     @api.marshal_list_with(bookList)
     def get(self):
-        book_list = books.get_books()
+        book_list = book_service.get_books()
         context = {'books': []}
         for bookId in sorted(book_list.keys()):
             context['books'].append(book_list[bookId])
@@ -37,7 +37,7 @@ class BookList(Resource):
     @api.marshal_with(book, code=201)
     def post(self):
         args = parser.parse_args()
-        added_book = books.add_book(
+        added_book = book_service.add_book(
             title=args['title'],
             author=args['author'],
             read=args['read']
@@ -54,14 +54,14 @@ class Book(Resource):
     @api.marshal_with(book)
     def get(self, bookId):
         try:
-            return books.find_book(bookId)
+            return book_service.find_book(bookId)
         except BookNotFoundException:
             api.abort(404, message="Book {} doesn't exist".format(bookId))
 
     @api.doc(responses={204: 'Book deleted'})
     def delete(self, bookId):
         try:
-            removed_book = books.delete_book(bookId)
+            removed_book = book_service.delete_book(bookId)
             return removed_book, 204
         except BookNotFoundException:
             api.abort(404, message="Book {} doesn't exist".format(bookId))
@@ -71,7 +71,7 @@ class Book(Resource):
     def put(self, bookId):
         try:
             args = parser.parse_args()
-            updated_book = books.update_book(book_id=bookId, new_book=args)
+            updated_book = book_service.update_book(book_id=bookId, new_book=args)
             return updated_book, 201
         except BookNotFoundException:
             api.abort(404, message="Book {} doesn't exist".format(bookId))
