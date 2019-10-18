@@ -137,7 +137,7 @@ export default {
       message: '',
       showMessage: false,
       editForm: {
-        id: '',
+        bookId: '',
         title: '',
         author: '',
         read: [],
@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     getBooks() {
-      const path = 'http://localhost:5000/books';
+      const path = 'http://localhost:5000/v1/book/';
       axios.get(path)
         .then((res) => {
           this.books = res.data.books;
@@ -160,7 +160,7 @@ export default {
         });
     },
     addBook(payload) {
-      const path = 'http://localhost:5000/books';
+      const path = 'http://localhost:5000/v1/book/';
       axios.post(path, payload)
         .then(() => {
           this.getBooks();
@@ -177,7 +177,7 @@ export default {
       this.addBookForm.title = '';
       this.addBookForm.author = '';
       this.addBookForm.read = [];
-      this.editForm.id = '';
+      this.editForm.bookId = '';
       this.editForm.title = '';
       this.editForm.author = '';
       this.editForm.read = [];
@@ -213,10 +213,10 @@ export default {
         author: this.editForm.author,
         read,
       };
-      this.updateBook(payload, this.editForm.id);
+      this.updateBook(payload, this.editForm.bookId);
     },
     updateBook(payload, bookID) {
-      const path = `http://localhost:5000/books/${bookID}`;
+      const path = `http://localhost:5000/v1/book/${bookID}`;
       axios.put(path, payload)
         .then(() => {
           this.getBooks();
@@ -236,7 +236,7 @@ export default {
       this.getBooks(); // why?
     },
     removeBook(bookID) {
-      const path = `http://localhost:5000/books/${bookID}`;
+      const path = `http://localhost:5000/v1/book/${bookID}`;
       axios.delete(path)
         .then(() => {
           this.getBooks();
@@ -250,7 +250,7 @@ export default {
         });
     },
     onDeleteBook(book) {
-      this.removeBook(book.id);
+      this.removeBook(book.bookId);
     },
   },
   created() {
