@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from flask_restplus import Resource, fields
 
-from .api import api, book_ns
+from . import api, book_ns
 
 
 book = api.model('Book', {

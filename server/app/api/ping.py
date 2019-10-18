@@ -1,6 +1,6 @@
 from flask_restplus import Resource, fields
 
-from .api import api, ping_ns
+from . import api, ping_ns
 
 
 @ping_ns.route('/')

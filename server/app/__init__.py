@@ -2,9 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from config import Config
 
-from app.api.api import apiv1
-from app.api.book import api as book_api
-from app.api.ping import api as ping_api
+from app.api import apiv1
 
 app = Flask(__name__)
 app.config.from_object(Config)
