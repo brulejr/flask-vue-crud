@@ -8,7 +8,7 @@ book = api.model('Book', {
     'bookId': fields.String(required=True, description='The book identifier'),
     'title': fields.String(required=True, description='The book title'),
     'author': fields.String(required=True, description='The book author'),
-    'read': fields.String(required=False, description='The book read flag')
+    'read': fields.Boolean(required=False, description='The book read flag')
 })
 bookList = api.model('BookList', {
     'books': fields.Nested(book, description='Array of book')
