@@ -1,7 +1,7 @@
-from collections import OrderedDict
 from flask_restplus import Resource, fields
 
 from . import api, book_ns
+from app.services import books, BookNotFoundException
 
 
 book = api.model('Book', {
@@ -13,17 +13,6 @@ book = api.model('Book', {
 bookList = api.model('BookList', {
     'books': fields.Nested(book, description='Array of book')
 })
-
-BOOKS = OrderedDict([
-    ('1', {'bookId': '1', 'title': 'On the Road', 'author': 'Jack Kerouac', 'read': True}),
-    ('2', {'bookId': '2', 'title': 'Harry Potter', 'author': 'J. K. Rowling', 'read': False}),
-    ('3', {'bookId': '3', 'title': 'Green Eggs and Ham', 'author': 'Dr. Seuss', 'read': True})
-])
-
-
-def abort_if_book_doesnt_exist(bookId):
-    if bookId not in BOOKS:
-        api.abort(404, message="Book {} doesn't exist".format(bookId))
 
 
 parser = api.parser()
@@ -38,23 +27,22 @@ class BookList(Resource):
     @api.doc(description='Get a list of books')
     @api.marshal_list_with(bookList)
     def get(self):
+        book_list = books.get_books()
         context = {'books': []}
-        for bookId in sorted(BOOKS.keys()):
-            context['books'].append(BOOKS[bookId])
+        for bookId in sorted(book_list.keys()):
+            context['books'].append(book_list[bookId])
         return context
 
     @api.doc(parser=parser)
     @api.marshal_with(book, code=201)
     def post(self):
         args = parser.parse_args()
-        bookId = '{}'.format(int(max(BOOKS.keys()))+1)
-        BOOKS[bookId] = {
-            'bookId': bookId,
-            'title': args['title'],
-            'author': args['author'],
-            'read': args['read']
-        }
-        return BOOKS[bookId], 201
+        added_book = books.add_book(
+            title=args['title'],
+            author=args['author'],
+            read=args['read']
+        )
+        return added_book, 201
 
 
 @book_ns.route('/<string:bookId>')
@@ -65,23 +53,25 @@ class Book(Resource):
     @api.doc('get_book')
     @api.marshal_with(book)
     def get(self, bookId):
-        abort_if_book_doesnt_exist(bookId)
-        return BOOKS[bookId]
+        try:
+            return books.find_book(bookId)
+        except BookNotFoundException:
+            api.abort(404, message="Book {} doesn't exist".format(bookId))
 
     @api.doc(responses={204: 'Book deleted'})
     def delete(self, bookId):
-        abort_if_book_doesnt_exist(bookId)
-        del BOOKS[bookId]
-        return '', 204
+        try:
+            removed_book = books.delete_book(bookId)
+            return removed_book, 204
+        except BookNotFoundException:
+            api.abort(404, message="Book {} doesn't exist".format(bookId))
 
     @api.doc(parser=parser)
     @api.marshal_with(book)
     def put(self, bookId):
-        abort_if_book_doesnt_exist(bookId)
-        args = parser.parse_args()
-        book = BOOKS[bookId]
-        for item in args.keys():
-            if item in book.keys() and args[item] is not None:
-                book[item] = args[item]
-        BOOKS[bookId] = book
-        return book, 201
+        try:
+            args = parser.parse_args()
+            updated_book = books.update_book(book_id=bookId, new_book=args)
+            return updated_book, 201
+        except BookNotFoundException:
+            api.abort(404, message="Book {} doesn't exist".format(bookId))
