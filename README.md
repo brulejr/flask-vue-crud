@@ -1,9 +1,9 @@
 # Developing a Single Page App with Flask and Vue.js
 
 ## Features
-* Minimal Flask 1.0 App
+* [Minimal Flask 1.0 App](https://www.fullstackpython.com/flask.html)
 * [Flask-RestPlus](http://flask-restplus.readthedocs.io) API with class-based secure resource routing
-* [vue-cli 3](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md) + yarn
+* [vue-cli 3](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md)
 * [Vuex](https://vuex.vuejs.org/)
 * [Vue Router](https://router.vuejs.org/)
 * [Axios](https://github.com/axios/axios/) for backend communication
