@@ -32,8 +32,8 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
     Navigate to [http://localhost:8080](http://localhost:8080)
 
 ## Resources
-* [https://flask-restplus.readthedocs.io/en/stable/](Flask-RESTPlus)
-* [https://flask-sqlalchemy.palletsprojects.com/en/2.x/](Flask-SQLAlchemy)
+* [Flask-RESTPlus]([https://flask-restplus.readthedocs.io/en/stable/)
+* [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 * Other project
-** https://github.com/gtalarico/flask-vuejs-template
-** https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+  * https://github.com/gtalarico/flask-vuejs-template
+  * https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
