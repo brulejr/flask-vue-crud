@@ -1,8 +1,12 @@
 # Developing a Single Page App with Flask and Vue.js
 
 ## Features
-* [Minimal Flask 1.0 App](https://www.fullstackpython.com/flask.html)
+### Backend
+* [Minimal Flask 1.0 App](https://www.fullstackpython.com/flask.html) Python Microservice Framework
 * [Flask-RestPlus](http://flask-restplus.readthedocs.io) API with class-based secure resource routing
+* [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) API for ORM database access
+* [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/) API that handle SQLAlchemy changes
+### Frontend
 * [vue-cli 3](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md)
 * [Vuex](https://vuex.vuejs.org/)
 * [Vue Router](https://router.vuejs.org/)
@@ -40,8 +44,6 @@
 Check out the [post](https://testdriven.io/developing-a-single-page-app-with-flask-and-vuejs).
 
 ## Resources
-* [Flask-RESTPlus](https://flask-restplus.readthedocs.io/en/stable/)
-* [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 * Other project
   * https://github.com/gtalarico/flask-vuejs-template
   * https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
