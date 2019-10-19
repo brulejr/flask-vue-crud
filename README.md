@@ -15,7 +15,8 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
     $ python3.7 -m venv env
     $ source env/bin/activate
     (env)$ pip install -r requirements.txt
-    (env)$ python app.py
+    (env)$ flask db upgrade
+    (env)$ flask run
     ```
 
     Navigate to [http://localhost:5000](http://localhost:5000)
@@ -29,3 +30,10 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
     ```
 
     Navigate to [http://localhost:8080](http://localhost:8080)
+
+## Resources
+* [https://flask-restplus.readthedocs.io/en/stable/](Flask-RESTPlus)
+* [https://flask-sqlalchemy.palletsprojects.com/en/2.x/](Flask-SQLAlchemy)
+* Other project
+** https://github.com/gtalarico/flask-vuejs-template
+** https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
