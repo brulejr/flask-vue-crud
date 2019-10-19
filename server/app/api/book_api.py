@@ -28,10 +28,7 @@ class BookList(Resource):
     @api.marshal_list_with(bookList)
     def get(self):
         book_list = book_service.get_books()
-        context = {'books': []}
-        for bookId in sorted(book_list.keys()):
-            context['books'].append(book_list[bookId])
-        return context
+        return {'books': book_list}
 
     @api.doc(parser=parser)
     @api.marshal_with(book, code=201)

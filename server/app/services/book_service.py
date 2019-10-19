@@ -1,11 +1,5 @@
-from collections import OrderedDict
-
-
-BOOKS = OrderedDict([
-    ('1', {'bookId': '1', 'title': 'On the Road', 'author': 'Jack Kerouac', 'read': True}),
-    ('2', {'bookId': '2', 'title': 'Harry Potter', 'author': 'J. K. Rowling', 'read': False}),
-    ('3', {'bookId': '3', 'title': 'Green Eggs and Ham', 'author': 'Dr. Seuss', 'read': True})
-])
+from app.database import db
+from app.models.book import Book
 
 
 class BookNotFoundException(Exception):
@@ -13,37 +7,49 @@ class BookNotFoundException(Exception):
 
 
 def add_book(title, author, read):
-    book_id = '{}'.format(int(max(BOOKS.keys())) + 1)
-    BOOKS[book_id] = {
-        'bookId': book_id,
-        'title': title,
-        'author': author,
-        'read': read
-    }
-    return BOOKS[book_id]
+    book = Book(
+        title=title,
+        author=author,
+        read=read
+    )
+    db.session.add(book)
+    db.session.commit()
+
+    return book.to_dict()
 
 
 def delete_book(book_id):
-    book = find_book(book_id)
-    del BOOKS[book_id]
-    return book
+    book = Book.query.get(book_id)
+    if book:
+        book_dict = book.to_dict()
+        db.session.delete(book)
+        db.session.commit()
+        return book_dict
+    else:
+        raise BookNotFoundException(book_id)
 
 
 def find_book(book_id):
-    if book_id in BOOKS:
-        return BOOKS[book_id]
+    book = Book.query.get(book_id)
+    if book:
+        return book.to_dict()
     else:
         raise BookNotFoundException(book_id)
 
 
 def get_books():
-    return BOOKS
+    books = [book.to_dict() for book in Book.query.all()]
+    return books
 
 
 def update_book(book_id, new_book):
-    book = find_book(book_id)
-    for item in new_book.keys():
-        if item in book.keys() and new_book[item] is not None:
-            book[item] = new_book[item]
-    BOOKS[book_id] = book
-    return book
+    book = Book.query.get(book_id)
+    if book:
+        book.title = new_book.title
+        book.author = new_book.author
+        book.read = new_book.read
+        db.session.add(book)
+        db.session.commit()
+        return book.to_dict()
+    else:
+        raise BookNotFoundException(book_id)
