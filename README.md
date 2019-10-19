@@ -1,8 +1,12 @@
 # Developing a Single Page App with Flask and Vue.js
 
-### Want to learn how to build this?
-
-Check out the [post](https://testdriven.io/developing-a-single-page-app-with-flask-and-vuejs).
+## Features
+* Minimal Flask 1.0 App
+* [Flask-RestPlus](http://flask-restplus.readthedocs.io) API with class-based secure resource routing
+* [vue-cli 3](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md) + yarn
+* [Vuex](https://vuex.vuejs.org/)
+* [Vue Router](https://router.vuejs.org/)
+* [Axios](https://github.com/axios/axios/) for backend communication
 
 ## Want to use this project?
 
@@ -30,6 +34,10 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
     ```
 
     Navigate to [http://localhost:8080](http://localhost:8080)
+
+## Want to learn how to build this?
+
+Check out the [post](https://testdriven.io/developing-a-single-page-app-with-flask-and-vuejs).
 
 ## Resources
 * [Flask-RESTPlus](https://flask-restplus.readthedocs.io/en/stable/)
