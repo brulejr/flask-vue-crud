@@ -31,9 +31,10 @@ Vue.use(Vuex)
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
   reducer: (state) => ({
+    access_token: state.access_token,
     navMenuActive: state.navMenuActive,
     navMenuCollapsed: state.navMenuCollapsed,
-    token: state.token,
+    refresh_token: state.refresh_token,
     user: state.user
   })
 })
