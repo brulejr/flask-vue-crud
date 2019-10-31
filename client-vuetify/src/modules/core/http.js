@@ -22,33 +22,36 @@
  * SOFTWARE.
  */
 
-import Vue from 'vue'
+import axios from 'axios'
+import _ from 'lodash'
 
-import Axios from './plugins/axios'
-import EventBus from './plugins/eventbus.plugin'
-import vuetify from './plugins/vuetify'
-
-import App from './App.vue'
-import makeI18n from '@/modules/i18n'
-import router from '@/modules/router'
 import store from '@/modules/store'
 
-Vue.config.productionTip = false
+const ROOT_URL = process.env.VUE_APP_ROOT_URL
 
-Vue.use(EventBus, {
-  events: {
-    RESIZE: 'RESIZE',
-    LOGOUT: 'LOGOUT'
+export async function HTTP (token) {
+  const headers = {}
+  const effectiveToken = token || store.getters.getToken
+  if (effectiveToken) {
+    headers.Authorization = 'Bearer ' + effectiveToken
   }
-})
-Vue.use(Axios)
 
-const i18n = makeI18n('en')
+  const instance = axios.create({
+    baseURL: ROOT_URL,
+    headers: headers
+  })
 
-new Vue({
-  i18n,
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+  instance.interceptors.response.use(function (response) {
+    return response
+  }, function (error) {
+    const status = _.get(error, 'response.status')
+    if (status === 401 || status === 403) {
+      window.$bus.emit(window.$events.LOGOUT, { force: true })
+    } else {
+      console.error('Unexpected error', error)
+    }
+    return Promise.reject(error)
+  })
+
+  return instance
+}

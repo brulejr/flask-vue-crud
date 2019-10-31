@@ -22,33 +22,33 @@
  * SOFTWARE.
  */
 
-import Vue from 'vue'
-
-import Axios from './plugins/axios'
-import EventBus from './plugins/eventbus.plugin'
-import vuetify from './plugins/vuetify'
-
-import App from './App.vue'
-import makeI18n from '@/modules/i18n'
-import router from '@/modules/router'
+import { HTTP } from '@/modules/core'
 import store from '@/modules/store'
 
-Vue.config.productionTip = false
+export default {
 
-Vue.use(EventBus, {
-  events: {
-    RESIZE: 'RESIZE',
-    LOGOUT: 'LOGOUT'
+  async login (username, password) {
+    try {
+      const http = await HTTP()
+      const response = await http.post('/v1/auth/login', {
+        username: username,
+        password: password
+      })
+      const auth = {
+        access_token: response.data.access_token,
+        refresh_token: response.data.refresh_token,
+        user: username
+      }
+      store.commit('setAuthentication', auth)
+      return auth
+    } catch (error) {
+      store.commit('clearAuthentication')
+      throw error.message
+    }
+  },
+
+  async logout () {
+    store.commit('clearAuthentication')
   }
-})
-Vue.use(Axios)
 
-const i18n = makeI18n('en')
-
-new Vue({
-  i18n,
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+}

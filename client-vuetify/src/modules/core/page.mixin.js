@@ -22,33 +22,18 @@
  * SOFTWARE.
  */
 
-import Vue from 'vue'
+import format from 'string-format'
 
-import Axios from './plugins/axios'
-import EventBus from './plugins/eventbus.plugin'
-import vuetify from './plugins/vuetify'
-
-import App from './App.vue'
-import makeI18n from '@/modules/i18n'
-import router from '@/modules/router'
-import store from '@/modules/store'
-
-Vue.config.productionTip = false
-
-Vue.use(EventBus, {
-  events: {
-    RESIZE: 'RESIZE',
-    LOGOUT: 'LOGOUT'
+function pageMixin (parms) {
+  return {
+    created: function () {
+      const pageName = (this.$options.name) ? this.$t(format('pages.{0}.title', this.$options.name)) : ''
+      const pageTitle = this.$t('appl.page.title', {
+        pageName: pageName
+      })
+      document.title = pageTitle
+    }
   }
-})
-Vue.use(Axios)
+}
 
-const i18n = makeI18n('en')
-
-new Vue({
-  i18n,
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+export default pageMixin

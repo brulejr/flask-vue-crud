@@ -23,32 +23,18 @@
  */
 
 import Vue from 'vue'
+import VueI18n from 'vue-i18n'
 
-import Axios from './plugins/axios'
-import EventBus from './plugins/eventbus.plugin'
-import vuetify from './plugins/vuetify'
+import { messagesEn } from './messages_en'
 
-import App from './App.vue'
-import makeI18n from '@/modules/i18n'
-import router from '@/modules/router'
-import store from '@/modules/store'
+Vue.use(VueI18n)
 
-Vue.config.productionTip = false
-
-Vue.use(EventBus, {
-  events: {
-    RESIZE: 'RESIZE',
-    LOGOUT: 'LOGOUT'
-  }
-})
-Vue.use(Axios)
-
-const i18n = makeI18n('en')
-
-new Vue({
-  i18n,
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+export default function makeI18n (locale) {
+  return new VueI18n({
+    locale,
+    fallbackLocale: 'en',
+    messages: {
+      en: messagesEn
+    }
+  })
+}

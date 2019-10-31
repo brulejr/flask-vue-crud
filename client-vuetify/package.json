@@ -9,13 +9,20 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "core-js": "^2.6.5",
+    "lodash": "^4.17.15",
+    "string-format": "^2.0.0",
     "vue": "^2.6.10",
+    "vue-i18n": "^8.15.0",
     "vue-router": "^3.0.3",
+    "vuelidate": "^0.7.4",
     "vuetify": "^2.1.0",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-persist": "^2.1.1"
   },
   "devDependencies": {
+    "@mdi/font": "^4.5.95",
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/cli-plugin-unit-jest": "^3.0.1",
@@ -25,8 +32,10 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "css-loader": "^3.2.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "material-design-icons-iconfont": "^5.0.1",
     "node-sass": "^4.12.0",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",

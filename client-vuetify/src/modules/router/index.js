@@ -23,32 +23,35 @@
  */
 
 import Vue from 'vue'
+import Router from 'vue-router'
 
-import Axios from './plugins/axios'
-import EventBus from './plugins/eventbus.plugin'
-import vuetify from './plugins/vuetify'
-
-import App from './App.vue'
-import makeI18n from '@/modules/i18n'
-import router from '@/modules/router'
 import store from '@/modules/store'
 
-Vue.config.productionTip = false
+import privateRoutes from './private.routes'
+import publicRoutes from './public.routes'
 
-Vue.use(EventBus, {
-  events: {
-    RESIZE: 'RESIZE',
-    LOGOUT: 'LOGOUT'
-  }
+Vue.use(Router)
+
+const router = new Router({
+  mode: 'history',
+  base: '/',
+  routes: [
+    publicRoutes,
+    privateRoutes
+  ]
 })
-Vue.use(Axios)
 
-const i18n = makeI18n('en')
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isAuthenticated) {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
+  } else {
+    next()
+  }
+  store.commit('setLoading', false)
+})
 
-new Vue({
-  i18n,
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+export default router
