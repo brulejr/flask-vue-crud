@@ -17,15 +17,16 @@ def token_required(f):
                 try:
                     token = jwt.decode(access_token, current_app.config['SECRET_KEY'])
                     current_user = User.query.get(token['uid'])
+                    print('current_user', current_user)
                 except jwt.ExpiredSignatureError as e:
-                    raise e
+                    api.abort(410, 'Token expired')
                 except (jwt.DecodeError, jwt.InvalidTokenError) as e:
-                    raise e
+                    api.abort(400, 'Token invalid')
                 except:
                     api.abort(401, 'Unknown token error')
 
             except IndexError:
-                raise jwt.InvalidTokenError
+                api.abort(400, 'Token format invalid')
         else:
             api.abort(403, 'Token required')
         return f(*args, **kwargs, current_user=current_user)

@@ -1,6 +1,7 @@
 from flask_restplus import Resource, fields
 
 from . import api, book_ns
+from .token_required import token_required
 from app.services import book_service, BookNotFoundException
 
 
@@ -26,13 +27,15 @@ class BookList(Resource):
 
     @api.doc(description='Get a list of books')
     @api.marshal_list_with(bookList)
-    def get(self):
+    @token_required
+    def get(self, current_user):
         book_list = book_service.get_books()
         return {'books': book_list}
 
     @api.doc(parser=parser)
     @api.marshal_with(book, code=201)
-    def post(self):
+    @token_required
+    def post(self, current_user):
         args = parser.parse_args()
         added_book = book_service.add_book(
             title=args['title'],
@@ -49,14 +52,16 @@ class Book(Resource):
 
     @api.doc('get_book')
     @api.marshal_with(book)
-    def get(self, bookId):
+    @token_required
+    def get(self, current_user, bookId):
         try:
             return book_service.find_book(bookId)
         except BookNotFoundException:
             api.abort(404, message="Book {} doesn't exist".format(bookId))
 
     @api.doc(responses={204: 'Book deleted'})
-    def delete(self, bookId):
+    @token_required
+    def delete(self, current_user, bookId):
         try:
             removed_book = book_service.delete_book(bookId)
             return removed_book, 204
@@ -65,7 +70,8 @@ class Book(Resource):
 
     @api.doc(parser=parser)
     @api.marshal_with(book)
-    def put(self, bookId):
+    @token_required
+    def put(self, current_user, bookId):
         try:
             args = parser.parse_args()
             updated_book = book_service.update_book(book_id=bookId, new_book=args)
