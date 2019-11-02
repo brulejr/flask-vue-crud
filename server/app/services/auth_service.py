@@ -46,7 +46,7 @@ def find_user(username: str):
 def generate_token(user_id: str, secret: str):
     try:
         _access_token = jwt.encode({'uid': user_id,
-                                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
+                                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3),
                                     'iat': datetime.datetime.utcnow()}, secret).decode('utf-8')
         _refresh_token = jwt.encode({'uid': user_id,
                                      'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
