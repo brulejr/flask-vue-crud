@@ -37,7 +37,15 @@ export const messagesEn = {
   },
   pages: {
     BooksPage: {
-      title: 'Books'
+      title: 'Books',
+      table: {
+        headers: {
+          author: 'Author',
+          read: 'Read?',
+          title: 'Title'
+        },
+        noData: 'No books available'
+      }
     },
     HomePage: {
       title: 'Dashboard'

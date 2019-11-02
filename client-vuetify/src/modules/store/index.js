@@ -26,6 +26,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
+import { BooksStore } from '@/modules/books'
+
 Vue.use(Vuex)
 
 const vuexLocal = new VuexPersistence({
@@ -41,6 +43,7 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   modules: {
+    books: BooksStore
   },
   state: {
     access_token: undefined,

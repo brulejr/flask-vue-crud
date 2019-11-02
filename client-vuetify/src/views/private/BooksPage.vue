@@ -1,15 +1,54 @@
 <template>
-  <div>
-    TBD - Books
-  </div>
+  <v-data-table :headers="headers"
+                :items="getBooks"
+                hide-default-footer>
+    <template slot="item" slot-scope="props">
+      <tr>
+        <td>{{ getTitle(props.item) }}</td>
+        <td>{{ getAuthor(props.item) }}</td>
+        <td>{{ getRead(props.item) }}</td>
+      </tr>
+    </template>
+    <template slot="no-data">{{$t('pages.BooksPage.table.noData')}}</template>
+  </v-data-table>
 </template>
 
 <script>
-import { PageMixin } from '@/modules/core'
+import _ from 'lodash'
+import { mapGetters } from 'vuex'
+import { DeviceMixin, PageMixin } from '@/modules/core'
+import { BooksService } from '@/modules/books'
 export default {
-  name: 'HomePage',
+  name: 'BooksPage',
   mixins: [
+    DeviceMixin(),
     PageMixin()
-  ]
+  ],
+  created: function () {
+    BooksService.findAllBooks()
+  },
+  computed: {
+    ...mapGetters(['getBooks']),
+    headers () {
+      return [
+        { text: this.$t('pages.BooksPage.table.headers.title'), value: 'title' },
+        { text: this.$t('pages.BooksPage.table.headers.author'), value: 'author' },
+        { text: this.$t('pages.BooksPage.table.headers.read'), value: 'read' }
+      ]
+    }
+  },
+  methods: {
+    getAuthor (item) {
+      console.log('item::author', item)
+      return _.get(item, 'author', 'n/a')
+    },
+    getRead (item) {
+      console.log('item::read', item)
+      return _.get(item, 'read', 'n/a')
+    },
+    getTitle (item) {
+      return _.get(item, 'title', 'ERROR')
+    }
+  }
 }
 </script>
