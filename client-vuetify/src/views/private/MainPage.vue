@@ -25,12 +25,9 @@ export default {
   created () {
     this.$bus.on(this.$events.LOGOUT, (event) => {
       if (_.get(event, 'payload.force')) {
-        this.$confirm(this.$t('errors.sessionExpired.details'), {
-          color: 'warning',
-          title: this.$t('errors.sessionExpired.title'),
-          affirmativeText: this.$t('text.ok'),
-          negativeText: ''
-        }).then(() => _logout())
+        if (confirm('Do you want to logout')) {
+          _logout()
+        }
       } else {
         _logout()
       }

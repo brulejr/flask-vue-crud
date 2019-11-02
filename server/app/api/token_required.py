@@ -19,11 +19,11 @@ def token_required(f):
                     current_user = User.query.get(token['uid'])
                     print('current_user', current_user)
                 except jwt.ExpiredSignatureError as e:
-                    api.abort(410, 'Token expired')
+                    api.abort(401, 'Token expired')
                 except (jwt.DecodeError, jwt.InvalidTokenError) as e:
-                    api.abort(400, 'Token invalid')
+                    api.abort(403, 'Token invalid')
                 except:
-                    api.abort(401, 'Unknown token error')
+                    api.abort(403, 'Unknown token error')
 
             except IndexError:
                 api.abort(400, 'Token format invalid')

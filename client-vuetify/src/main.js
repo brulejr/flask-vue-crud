@@ -35,6 +35,8 @@ import store from '@/modules/store'
 
 Vue.config.productionTip = false
 
+const i18n = makeI18n('en')
+
 Vue.use(EventBus, {
   events: {
     RESIZE: 'RESIZE',
@@ -42,8 +44,6 @@ Vue.use(EventBus, {
   }
 })
 Vue.use(Axios)
-
-const i18n = makeI18n('en')
 
 new Vue({
   i18n,

@@ -45,6 +45,7 @@ export async function HTTP (token) {
     return response
   }, function (error) {
     const status = _.get(error, 'response.status')
+    console.log('status', status)
     if (status === 401 || status === 403) {
       window.$bus.emit(window.$events.LOGOUT, { force: true })
     } else {

@@ -10,9 +10,9 @@
         <td>
           <v-icon small
                   class="mr-2"
-                  @click="editItem(item)">edit</v-icon>
+                  @click="editItem(props.item)">edit</v-icon>
           <v-icon small
-                  @click="deleteItem(item)">delete</v-icon>
+                  @click="deleteItem(props.item)">delete</v-icon>
         </td>
       </tr>
     </template>
@@ -41,17 +41,20 @@ export default {
         { text: this.$t('pages.BooksPage.table.headers.title'), value: 'title' },
         { text: this.$t('pages.BooksPage.table.headers.author'), value: 'author' },
         { text: this.$t('pages.BooksPage.table.headers.read'), value: 'read' },
-        { text: this.$t('pages.BooksPage.table.headers.actions'), value: 'action', sortable: false },
+        { text: this.$t('pages.BooksPage.table.headers.actions'), value: 'action', sortable: false }
       ]
     }
   },
   methods: {
+    deleteItem (item) {
+      if (confirm('Are you sure you want to delete this item?')) {
+        console.log('deleting', item)
+      }
+    },
     getAuthor (item) {
-      console.log('item::author', item)
       return _.get(item, 'author', 'n/a')
     },
     getRead (item) {
-      console.log('item::read', item)
       return _.get(item, 'read', 'n/a')
     },
     getTitle (item) {
