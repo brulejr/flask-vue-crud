@@ -7,6 +7,13 @@
         <td>{{ getTitle(props.item) }}</td>
         <td>{{ getAuthor(props.item) }}</td>
         <td>{{ getRead(props.item) }}</td>
+        <td>
+          <v-icon small
+                  class="mr-2"
+                  @click="editItem(item)">edit</v-icon>
+          <v-icon small
+                  @click="deleteItem(item)">delete</v-icon>
+        </td>
       </tr>
     </template>
     <template slot="no-data">{{$t('pages.BooksPage.table.noData')}}</template>
@@ -33,7 +40,8 @@ export default {
       return [
         { text: this.$t('pages.BooksPage.table.headers.title'), value: 'title' },
         { text: this.$t('pages.BooksPage.table.headers.author'), value: 'author' },
-        { text: this.$t('pages.BooksPage.table.headers.read'), value: 'read' }
+        { text: this.$t('pages.BooksPage.table.headers.read'), value: 'read' },
+        { text: this.$t('pages.BooksPage.table.headers.actions'), value: 'action', sortable: false },
       ]
     }
   },

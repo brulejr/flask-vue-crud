@@ -40,6 +40,7 @@ export const messagesEn = {
       title: 'Books',
       table: {
         headers: {
+          actions: 'Actions',
           author: 'Author',
           read: 'Read?',
           title: 'Title'
