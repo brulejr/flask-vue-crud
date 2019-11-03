@@ -30,7 +30,7 @@ export default {
   async login (username, password) {
     try {
       const http = await HTTP()
-      const response = await http.post('/v1/auth/login', {
+      const response = await http.post('/api/v1/auth/login', {
         username: username,
         password: password
       })

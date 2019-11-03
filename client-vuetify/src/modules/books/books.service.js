@@ -26,7 +26,7 @@ import _ from 'lodash'
 import CRUD from '@/modules/core/httpCrud'
 import store from '@/modules/store'
 
-const API = '/v1/book/'
+const API = '/api/v1/book/'
 
 export default {
 

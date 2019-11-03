@@ -32,7 +32,7 @@ const ROOT_URL = process.env.VUE_APP_ROOT_URL
 
 const refreshAuthLogic = failedRequest => {
   const currentRefreshToken = store.getters.getRefreshToken
-  return axios.post('/v1/auth/refresh', {
+  return axios.post('/api/v1/auth/refresh', {
     refresh_token: currentRefreshToken
   }).then(response => {
     const accessToken = _.get(response, 'data.access_token')

@@ -4,7 +4,7 @@ import hashlib
 import re
 from werkzeug.security import check_password_hash
 
-from . import api, auth_ns
+from . import api, auth_v1_ns
 from app.services import auth_service
 
 
@@ -34,7 +34,7 @@ class ValidationException(Exception):
         self.message = message
 
 
-@auth_ns.route('/register')
+@auth_v1_ns.route('/register')
 class Register(Resource):
     # 4-16 symbols, can contain A-Z, a-z, 0-9, _ (_ can not be at the begin/end and can not go in a row (__))
     USERNAME_REGEXP = r'^(?![_])(?!.*[_]{2})[a-zA-Z0-9._]+(?<![_])$'
@@ -42,9 +42,9 @@ class Register(Resource):
     # 6-64 symbols, required upper and lower case letters. Can contain !@#$%_  .
     PASSWORD_REGEXP = r'^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])[\w\d!@#$%_]{6,64}$'
 
-    @auth_ns.expect(register_model, validate=True)
-    @auth_ns.marshal_with(user_resource_model)
-    @auth_ns.response(400, 'username or password incorrect')
+    @auth_v1_ns.expect(register_model, validate=True)
+    @auth_v1_ns.marshal_with(user_resource_model)
+    @auth_v1_ns.response(400, 'username or password incorrect')
     def post(self):
         try:
             if not re.search(self.USERNAME_REGEXP, api.payload['username']):
@@ -66,14 +66,14 @@ class Register(Resource):
             return user
 
         except ValidationException as e:
-            auth_ns.abort(400, e.message, field=e.error_field_name)
+            auth_v1_ns.abort(400, e.message, field=e.error_field_name)
 
 
-@auth_ns.route('/login')
+@auth_v1_ns.route('/login')
 class Login(Resource):
-    @auth_ns.expect(register_model)
-    @auth_ns.response(200, 'Success', return_token_model)
-    @auth_ns.response(401, 'Incorrect username or password')
+    @auth_v1_ns.expect(register_model)
+    @auth_v1_ns.response(200, 'Success', return_token_model)
+    @auth_v1_ns.response(401, 'Incorrect username or password')
     def post(self):
         """
         Look implementation notes
@@ -100,18 +100,18 @@ class Login(Resource):
                 return {'access_token': token_pair.access_token, 'refresh_token': refresh_token.refresh_token}, 200
 
             else:
-                auth_ns.abort(401, 'Incorrect username or password')
+                auth_v1_ns.abort(401, 'Incorrect username or password')
 
         except auth_service.UserNotFoundException:
-            auth_ns.abort(401, 'Incorrect username or password')
+            auth_v1_ns.abort(401, 'Incorrect username or password')
         except auth_service.AuthenticationException:
-            auth_ns.abort(500, 'Unexpected authentication error')
+            auth_v1_ns.abort(500, 'Unexpected authentication error')
 
 
-@auth_ns.route('/refresh')
+@auth_v1_ns.route('/refresh')
 class Refresh(Resource):
-    @auth_ns.expect(refresh_token_model, validate=True)
-    @auth_ns.response(200, 'Success', return_token_model)
+    @auth_v1_ns.expect(refresh_token_model, validate=True)
+    @auth_v1_ns.response(200, 'Success', return_token_model)
     def post(self):
         try:
             refresh_token = api.payload['refresh_token']
@@ -121,8 +121,8 @@ class Refresh(Resource):
             return new_token_pair, 200
 
         except auth_service.RefreshTokenNotFoundException:
-            auth_ns.abort(401, 'Unknown token error')
+            auth_v1_ns.abort(401, 'Unknown token error')
         except auth_service.RefreshTokenInvalidException:
-            auth_ns.abort(400, 'Invalid token error')
+            auth_v1_ns.abort(400, 'Invalid token error')
         except auth_service.AuthenticationException:
-            auth_ns.abort(500, 'Unexpected authentication error')
+            auth_v1_ns.abort(500, 'Unexpected authentication error')

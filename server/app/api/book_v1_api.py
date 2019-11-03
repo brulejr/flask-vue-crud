@@ -1,6 +1,6 @@
 from flask_restplus import Resource, fields
 
-from . import api, book_ns
+from . import api, book_v1_ns
 from .token_required import token_required
 from app.services import book_service, BookNotFoundException
 
@@ -22,7 +22,7 @@ parser.add_argument('author', type=str, required=True, help='Author for the book
 parser.add_argument('read', type=bool, required=False, help='Read flag for the book', location='json')
 
 
-@book_ns.route('/')
+@book_v1_ns.route('/')
 class BookList(Resource):
 
     @api.doc(description='Get a list of books')
@@ -45,7 +45,7 @@ class BookList(Resource):
         return added_book, 201
 
 
-@book_ns.route('/<string:bookId>')
+@book_v1_ns.route('/<string:bookId>')
 @api.param('bookId', 'The book identifier')
 @api.response(404, 'Book not found')
 class Book(Resource):
