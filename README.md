@@ -11,6 +11,7 @@
 * [Vuex](https://vuex.vuejs.org/)
 * [Vue Router](https://router.vuejs.org/)
 * [Axios](https://github.com/axios/axios/) for backend communication
+  * [axios-auth-refresh](https://github.com/Flyrell/axios-auth-refresh) for automatic token refresh
 
 ## Want to use this project?
 
@@ -32,7 +33,7 @@
 1. Run the client-side Vue app in a different terminal window:
 
     ```sh
-    $ cd client
+    $ cd client-vuetify
     $ npm install
     $ npm run serve
     ```
@@ -47,3 +48,4 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
 * Other project
   * https://github.com/gtalarico/flask-vuejs-template
   * https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+  * https://github.com/PythonToDoList/flask/blob/master/flask_todo/app.py
