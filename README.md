@@ -11,7 +11,7 @@
 * [Vuex](https://vuex.vuejs.org/)
 * [Vue Router](https://router.vuejs.org/)
 * [Axios](https://github.com/axios/axios/) for backend communication
-** [axios-auth-refresh](https://github.com/Flyrell/axios-auth-refresh) for automatic token refresh
+  * [axios-auth-refresh](https://github.com/Flyrell/axios-auth-refresh) for automatic token refresh
 
 ## Want to use this project?
 
