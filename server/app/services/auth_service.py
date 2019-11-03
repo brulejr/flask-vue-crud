@@ -46,10 +46,10 @@ def find_user(username: str):
 def generate_token(user_id: str, secret: str):
     try:
         _access_token = jwt.encode({'uid': user_id,
-                                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3),
+                                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1),
                                     'iat': datetime.datetime.utcnow()}, secret).decode('utf-8')
         _refresh_token = jwt.encode({'uid': user_id,
-                                     'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30),
+                                     'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15),
                                      'iat': datetime.datetime.utcnow()}, secret).decode('utf-8')
         return TokenPair(access_token=_access_token, refresh_token=_refresh_token)
     except jwt.PyJWTError:

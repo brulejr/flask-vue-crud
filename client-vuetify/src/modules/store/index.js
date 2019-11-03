@@ -54,6 +54,7 @@ export default new Vuex.Store({
     user: undefined
   },
   getters: {
+    getRefreshToken: state => state.refresh_token,
     getToken: state => state.access_token,
     getUser: state => state.user,
     isAuthenticated: state => !!state.access_token && !!state.refresh_token && !!state.user,
@@ -66,6 +67,10 @@ export default new Vuex.Store({
       state.access_token = undefined
       state.refresh_token = undefined
       state.user = undefined
+    },
+    refreshToken: (state, auth) => {
+      state.access_token = auth.access_token
+      state.refresh_token = auth.refresh_token
     },
     setAuthentication: (state, auth) => {
       state.access_token = auth.access_token

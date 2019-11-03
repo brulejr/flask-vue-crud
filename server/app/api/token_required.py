@@ -26,7 +26,7 @@ def token_required(f):
                     api.abort(403, 'Unknown token error')
 
             except IndexError:
-                api.abort(400, 'Token format invalid')
+                api.abort(403, 'Token format invalid')
         else:
             api.abort(403, 'Token required')
         return f(*args, **kwargs, current_user=current_user)

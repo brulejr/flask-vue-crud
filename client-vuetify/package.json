@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "axios-auth-refresh": "^1.0.7",
     "core-js": "^2.6.5",
     "lodash": "^4.17.15",
     "string-format": "^2.0.0",

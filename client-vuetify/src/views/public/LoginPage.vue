@@ -104,7 +104,7 @@ export default {
     async login () {
       this.$store.commit('setLoading', true)
       try {
-        var auth = await AuthService.login(this.username, this.password)
+        await AuthService.login(this.username, this.password)
         this.$router.replace({ name: 'home' })
       } catch {
         this.error = this.$t('pages.LoginPage.form.error')

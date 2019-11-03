@@ -23,36 +23,38 @@
  */
 
 import axios from 'axios'
+import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import _ from 'lodash'
 
 import store from '@/modules/store'
 
 const ROOT_URL = process.env.VUE_APP_ROOT_URL
 
-export async function HTTP (token) {
-  const headers = {}
-  const effectiveToken = token || store.getters.getToken
-  if (effectiveToken) {
-    headers.Authorization = 'Bearer ' + effectiveToken
-  }
+const refreshAuthLogic = failedRequest => {
+  const currentRefreshToken = store.getters.getRefreshToken
+  return axios.post('/v1/auth/refresh', {
+    refresh_token: currentRefreshToken
+  }).then(response => {
+    const accessToken = _.get(response, 'data.access_token')
+    const refreshToken = _.get(response, 'data.refresh_token')
+    store.commit('refreshToken', { access_token: accessToken, refresh_token: refreshToken })
+    failedRequest.response.config.headers['Authorization'] = 'Bearer ' + accessToken
+    return Promise.resolve()
+  }).catch(error => {
+    window.$bus.emit(window.$events.LOGOUT, { force: true })
+    throw error
+  })
+}
 
+export async function HTTP () {
   const instance = axios.create({
     baseURL: ROOT_URL,
-    headers: headers
+    headers: {
+      Authorization: 'Bearer ' + store.getters.getToken
+    }
   })
 
-  instance.interceptors.response.use(function (response) {
-    return response
-  }, function (error) {
-    const status = _.get(error, 'response.status')
-    console.log('status', status)
-    if (status === 401 || status === 403) {
-      window.$bus.emit(window.$events.LOGOUT, { force: true })
-    } else {
-      console.error('Unexpected error', error)
-    }
-    return Promise.reject(error)
-  })
+  createAuthRefreshInterceptor(instance, refreshAuthLogic)
 
   return instance
 }
