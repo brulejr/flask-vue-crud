@@ -25,11 +25,11 @@ export default {
   created () {
     this.$bus.on(this.$events.LOGOUT, (event) => {
       if (_.get(event, 'payload.force')) {
+        _logout()
+      } else {
         if (confirm('Do you want to logout')) {
           _logout()
         }
-      } else {
-        _logout()
       }
     })
   },
