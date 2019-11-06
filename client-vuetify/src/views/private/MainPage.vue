@@ -12,6 +12,7 @@
 
 <script>
 import _ from 'lodash'
+import idleTimeout from 'idle-timeout'
 import { AppNavMenu, AppToolbar } from '@/modules/layout'
 import { AuthService } from '@/modules/auth'
 import { mapGetters } from 'vuex'
@@ -31,6 +32,12 @@ export default {
           _logout()
         }
       }
+    })
+    this.idleTimeout = idleTimeout(() => {
+      console.log('*** timeout')
+      _logout()
+    }, {
+      timeout: 1000 * 60 * 15
     })
   },
   computed: {
