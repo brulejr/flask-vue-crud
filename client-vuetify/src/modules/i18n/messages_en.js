@@ -29,10 +29,14 @@ export const messagesEn = {
     },
     title: 'flask-vue-crud'
   },
-  errors: {
+  dialogs: {
+    logoutConfirmation: {
+      title: 'Logout',
+      details: 'Are you sure you want to logout?'
+    },
     sessionExpired: {
       title: 'Session expired',
-      details: 'Please login to Slidedeck again.'
+      details: 'Please login to flask-vue-crud again.'
     }
   },
   pages: {
@@ -83,6 +87,7 @@ export const messagesEn = {
     }
   },
   text: {
+    cancel: 'Cancel',
     no: 'No',
     ok: 'OK',
     yes: 'Yes',

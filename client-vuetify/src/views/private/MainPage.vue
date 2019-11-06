@@ -7,6 +7,7 @@
         <router-view/>
       </transition>
     </v-content>
+    <confirm ref="confirm"></confirm>
   </v-app>
 </template>
 
@@ -15,10 +16,20 @@ import _ from 'lodash'
 import idleTimeout from 'idle-timeout'
 import { AppNavMenu, AppToolbar } from '@/modules/layout'
 import { AuthService } from '@/modules/auth'
+import { Confirm } from '@/modules/notify'
 import { mapGetters } from 'vuex'
 function _logout () {
   AuthService.logout().then(() => {
     location.reload()
+  })
+}
+function _logoutWithConfirm (self) {
+  self.$refs.confirm.open({
+    title: self.$t('dialogs.sessionExpired.title'),
+    message: self.$t('dialogs.sessionExpired.details'),
+    affirmativeText: self.$t('text.ok')
+  }).then((confirm) => {
+    if (confirm) _logout()
   })
 }
 export default {
@@ -26,16 +37,20 @@ export default {
   created () {
     this.$bus.on(this.$events.LOGOUT, (event) => {
       if (_.get(event, 'payload.force')) {
-        _logout()
+        _logoutWithConfirm(this)
       } else {
-        if (confirm('Do you want to logout')) {
-          _logout()
-        }
+        this.$refs.confirm.open({
+          title: this.$t('dialogs.logoutConfirmation.title'),
+          message: this.$t('dialogs.logoutConfirmation.details'),
+          affirmativeText: this.$t('text.yes'),
+          negativeText: this.$t('text.no')
+        }).then((confirm) => {
+          if (confirm) _logout()
+        })
       }
     })
     this.idleTimeout = idleTimeout(() => {
-      console.log('*** timeout')
-      _logout()
+      _logoutWithConfirm(this)
     }, {
       timeout: 1000 * 60 * 15
     })
@@ -51,9 +66,13 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.$root.$confirm = this.$refs.confirm.open
+  },
   components: {
     AppNavMenu,
-    AppToolbar
+    AppToolbar,
+    Confirm
   }
 }
 </script>
