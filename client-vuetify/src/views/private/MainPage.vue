@@ -24,7 +24,7 @@ function _logout () {
   })
 }
 function _logoutWithConfirm (self) {
-  self.$refs.confirm.open({
+  self.$root.$confirm({
     title: self.$t('dialogs.sessionExpired.title'),
     message: self.$t('dialogs.sessionExpired.details'),
     affirmativeText: self.$t('text.ok')
@@ -39,7 +39,7 @@ export default {
       if (_.get(event, 'payload.force')) {
         _logoutWithConfirm(this)
       } else {
-        this.$refs.confirm.open({
+        this.$root.$confirm({
           title: this.$t('dialogs.logoutConfirmation.title'),
           message: this.$t('dialogs.logoutConfirmation.details'),
           affirmativeText: this.$t('text.yes'),
