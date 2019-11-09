@@ -84,6 +84,44 @@ export const messagesEn = {
           login: 'Login'
         }
       }
+    },
+    SignupPage: {
+      title: 'Sign Up',
+      footer: 'Register your credentials and click \'Sign Up\'',
+      form: {
+        fields: {
+          username: {
+            label: 'Username',
+            placeholder: 'Your username',
+            error: {
+              alphaNum: 'Username must be alpha-numeric',
+              minLength: 'Username must be at least 4 characters',
+              required: 'Username is required'
+            }
+          },
+          password: {
+            label: 'Password',
+            placeholder: 'Your password',
+            error: {
+              minLength: 'Password must be at least 8 characters',
+              required: 'Password is required'
+            }
+          },
+          confirmPassword: {
+            label: 'Confirm Password',
+            placeholder: 'Your password',
+            error: {
+              minLength: 'Password must be at least 8 characters',
+              required: 'Password is required'
+            }
+          }
+        },
+        error: 'Credentials are invalid',
+        buttons: {
+          clear: 'Clear',
+          signup: 'SignUp'
+        }
+      }
     }
   },
   text: {

@@ -23,7 +23,7 @@ function _logout () {
     location.reload()
   })
 }
-function _logoutWithConfirm (self) {
+function _sessionExpired (self) {
   self.$root.$confirm({
     title: self.$t('dialogs.sessionExpired.title'),
     message: self.$t('dialogs.sessionExpired.details'),
@@ -37,7 +37,7 @@ export default {
   created () {
     this.$bus.on(this.$events.LOGOUT, (event) => {
       if (_.get(event, 'payload.force')) {
-        _logoutWithConfirm(this)
+        _sessionExpired(this)
       } else {
         this.$root.$confirm({
           title: this.$t('dialogs.logoutConfirmation.title'),
@@ -50,7 +50,7 @@ export default {
       }
     })
     this.idleTimeout = idleTimeout(() => {
-      _logoutWithConfirm(this)
+      _sessionExpired(this)
     }, {
       timeout: 1000 * 60 * 15
     })

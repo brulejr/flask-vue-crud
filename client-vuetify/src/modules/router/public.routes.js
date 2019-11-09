@@ -23,9 +23,23 @@
  */
 
 import LoginPage from '@/views/public/LoginPage'
+import PublicPage from '@/views/public/PublicPage'
+import SignupPage from '@/views/public/SignupPage'
 
 export default {
-  path: '/login',
-  component: LoginPage,
-  meta: { requiresAuth: false }
+  path: '/',
+  component: PublicPage,
+  meta: { requiresAuth: false },
+  children: [
+    {
+      name: 'login',
+      path: 'login',
+      component: LoginPage
+    },
+    {
+      name: 'signup',
+      path: 'signup',
+      component: SignupPage
+    }
+  ]
 }

@@ -49,6 +49,19 @@ export default {
 
   async logout () {
     store.commit('clearAuthentication')
+  },
+
+  async signup (username, password) {
+    try {
+      const http = await HTTP()
+      const response = await http.post('/api/v1/auth/login', {
+        username: username,
+        password: password
+      })
+      return response.data.username
+    } catch (error) {
+      throw error.message
+    }
   }
 
 }

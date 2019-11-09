@@ -15,25 +15,28 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
+const DEFAULT_OPTIONS = {
+  affirmativeText: null,
+  color: 'primary',
+  message: null,
+  negativeText: null,
+  title: null,
+  width: 290,
+  zIndex: 200
+}
 export default {
   data: () => ({
     dialog: false,
     resolve: null,
     reject: null,
-    options: {
-      affirmativeText: null,
-      color: 'primary',
-      message: null,
-      negativeText: null,
-      title: null,
-      width: 290,
-      zIndex: 200
-    }
+    options: {}
   }),
   methods: {
     open (options) {
       this.dialog = true
-      this.options = Object.assign(this.options, options)
+      this.options = _.merge(_.clone(DEFAULT_OPTIONS), options)
       return new Promise((resolve, reject) => {
         this.resolve = resolve
         this.reject = reject
