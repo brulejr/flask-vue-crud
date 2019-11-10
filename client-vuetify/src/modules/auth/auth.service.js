@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import _ from 'lodash'
 
 import { HTTP } from '@/modules/core'
 import store from '@/modules/store'
@@ -51,13 +52,13 @@ export default {
     store.commit('clearAuthentication')
   },
 
-  async signup (username, password) {
+  async signup (request) {
     try {
       const http = await HTTP()
-      const response = await http.post('/api/v1/auth/register', {
-        username: username,
-        password: password
-      })
+      const response = await http.post(
+        '/api/v1/auth/register',
+        _.pick(request, ['username', 'password', 'email'])
+      )
       return response.data.username
     } catch (error) {
       throw error.message

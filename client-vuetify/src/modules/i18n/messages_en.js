@@ -112,8 +112,15 @@ export const messagesEn = {
             label: 'Confirm Password',
             placeholder: 'Your password',
             error: {
-              minLength: 'Password must be at least 8 characters',
-              required: 'Password is required'
+              sameAsPassword: 'Confirmation must be same as Password'
+            }
+          },
+          email: {
+            label: 'Email Address',
+            placeholder: 'Your email address',
+            error: {
+              email: 'Email must be of correct form',
+              required: 'Email is required'
             }
           }
         },

@@ -30,6 +30,30 @@
             @change="$v.password.$touch()"
             @blur="$v.password.$touch()"
             @click:append="showPassword = !showPassword"></v-text-field>
+        <v-text-field
+            name="confirmPassword"
+            prepend-icon="lock"
+            v-model.trim='confirmPassword'
+            autocomplete="off"
+            clearable
+            :append-icon="showConfirmPassword ? 'visibility' : 'visibility_off'"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            :label="$t('pages.SignupPage.form.fields.confirmPassword.label')"
+            :error-messages="errorMessage('confirmPassword')"
+            @change="$v.confirmPassword.$touch()"
+            @blur="$v.confirmPassword.$touch()"
+            @click:append="showConfirmPassword = !showConfirmPassword"></v-text-field>
+        <v-text-field
+            name="email"
+            type="text"
+            prepend-icon="email"
+            v-model.trim='email'
+            autocomplete="off"
+            clearable
+            :label="$t('pages.SignupPage.form.fields.email.label')"
+            :error-messages="errorMessage('email')"
+            @change="$v.email.$touch()"
+            @blur="$v.email.$touch()"></v-text-field>
         <v-alert :value="!!error" type="error" outlined>
           {{error}}
         </v-alert>
@@ -42,7 +66,6 @@
             :loading="loading">{{$t('pages.SignupPage.form.buttons.signup')}}</v-btn>
         <v-btn
             text
-            :disabled="!$v.$dirty"
             @click="clear">{{$t('pages.SignupPage.form.buttons.clear')}}</v-btn>
         <v-spacer/>
         <v-btn
@@ -57,7 +80,7 @@
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 import { validationMixin } from 'vuelidate'
-import { alphaNum, minLength, required } from 'vuelidate/lib/validators'
+import { alphaNum, email, minLength, required, sameAs } from 'vuelidate/lib/validators'
 import { AuthService } from '@/modules/auth'
 import { PageMixin } from '@/modules/core'
 export default {
@@ -73,8 +96,11 @@ export default {
     return {
       username: '',
       password: '',
+      confirmPassword: '',
+      email: '',
       error: '',
-      showPassword: false
+      showPassword: false,
+      showConfirmPassword: false
     }
   },
   methods: {
@@ -89,7 +115,9 @@ export default {
         var errorTypes = _.keys(_.pickBy(check, (v, k) => !v && _.includes([
           'required',
           'minLength',
-          'alphaNum'
+          'alphaNum',
+          'sameAsPassword',
+          'email'
         ], k)))
         if (!_.isEmpty(errorTypes)) {
           const msgId = 'pages.SignupPage.form.fields.' + field + '.error'
@@ -100,7 +128,7 @@ export default {
     async signup () {
       this.$store.commit('setLoading', true)
       try {
-        await AuthService.signup(this.username, this.password)
+        await AuthService.signup(_.pick(this, ['username', 'password', 'email']))
         this.$router.replace({ name: 'login' })
       } catch {
         this.error = this.$t('pages.SignupPage.form.error')
@@ -113,7 +141,9 @@ export default {
   },
   validations: {
     username: { required, minLength: minLength(4), alphaNum },
-    password: { required, minLength: minLength(8) }
+    password: { required, minLength: minLength(8) },
+    confirmPassword: { sameAsPassword: sameAs('password') },
+    email: { required, email }
   }
 }
 </script>
