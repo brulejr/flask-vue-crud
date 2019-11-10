@@ -81,7 +81,8 @@ export const messagesEn = {
         error: 'Credentials are invalid',
         buttons: {
           clear: 'Clear',
-          login: 'Login'
+          login: 'Login',
+          signup: 'Register User'
         }
       }
     },
@@ -116,9 +117,10 @@ export const messagesEn = {
             }
           }
         },
-        error: 'Credentials are invalid',
+        error: 'Registration is invalid',
         buttons: {
           clear: 'Clear',
+          login: 'Return to Login',
           signup: 'SignUp'
         }
       }

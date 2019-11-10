@@ -54,7 +54,7 @@ export default {
   async signup (username, password) {
     try {
       const http = await HTTP()
-      const response = await http.post('/api/v1/auth/login', {
+      const response = await http.post('/api/v1/auth/register', {
         username: username,
         password: password
       })

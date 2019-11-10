@@ -1,8 +1,8 @@
 <template>
-  <v-form ref="form" @submit.prevent="login">
+  <v-form ref="form" @submit.prevent="signup">
     <v-card>
       <v-toolbar dark color="primary">
-        <v-toolbar-title>{{$t('appl.title')}} &ndash; {{$t('pages.LoginPage.title')}}</v-toolbar-title>
+        <v-toolbar-title>{{$t('appl.title')}} &ndash; {{$t('pages.SignupPage.title')}}</v-toolbar-title>
       </v-toolbar>
       <v-card-text>
         <v-text-field
@@ -13,7 +13,7 @@
             v-model.trim='username'
             autocomplete="off"
             clearable
-            :label="$t('pages.LoginPage.form.fields.username.label')"
+            :label="$t('pages.SignupPage.form.fields.username.label')"
             :error-messages="errorMessage('username')"
             @change="$v.username.$touch()"
             @blur="$v.username.$touch()"></v-text-field>
@@ -25,7 +25,7 @@
             clearable
             :append-icon="showPassword ? 'visibility' : 'visibility_off'"
             :type="showPassword ? 'text' : 'password'"
-            :label="$t('pages.LoginPage.form.fields.password.label')"
+            :label="$t('pages.SignupPage.form.fields.password.label')"
             :error-messages="errorMessage('password')"
             @change="$v.password.$touch()"
             @blur="$v.password.$touch()"
@@ -39,15 +39,15 @@
             type="submit"
             color="primary"
             :disabled="$v.$invalid"
-            :loading="loading">{{$t('pages.LoginPage.form.buttons.login')}}</v-btn>
+            :loading="loading">{{$t('pages.SignupPage.form.buttons.signup')}}</v-btn>
         <v-btn
             text
             :disabled="!$v.$dirty"
-            @click="clear">{{$t('pages.LoginPage.form.buttons.clear')}}</v-btn>
+            @click="clear">{{$t('pages.SignupPage.form.buttons.clear')}}</v-btn>
         <v-spacer/>
         <v-btn
             text
-            to="/signup">{{$t('pages.LoginPage.form.buttons.signup')}}</v-btn>
+            to="/login">{{$t('pages.SignupPage.form.buttons.login')}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>
@@ -61,7 +61,7 @@ import { alphaNum, minLength, required } from 'vuelidate/lib/validators'
 import { AuthService } from '@/modules/auth'
 import { PageMixin } from '@/modules/core'
 export default {
-  name: 'LoginPage',
+  name: 'SignupPage',
   mixins: [
     PageMixin(),
     validationMixin
@@ -92,18 +92,18 @@ export default {
           'alphaNum'
         ], k)))
         if (!_.isEmpty(errorTypes)) {
-          const msgId = 'pages.LoginPage.form.fields.' + field + '.error'
+          const msgId = 'pages.SignupPage.form.fields.' + field + '.error'
           return this.$t(msgId + '.' + errorTypes[0])
         }
       }
     },
-    async login () {
+    async signup () {
       this.$store.commit('setLoading', true)
       try {
-        await AuthService.login(this.username, this.password)
-        this.$router.replace({ name: 'home' })
+        await AuthService.signup(this.username, this.password)
+        this.$router.replace({ name: 'login' })
       } catch {
-        this.error = this.$t('pages.LoginPage.form.error')
+        this.error = this.$t('pages.SignupPage.form.error')
         this.$store.commit('setLoading', false)
       }
     }
