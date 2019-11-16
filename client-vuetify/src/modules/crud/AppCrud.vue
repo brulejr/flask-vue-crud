@@ -44,7 +44,17 @@ export default {
       console.log('editItem', item)
     },
     deleteItem (item) {
-      this.$emit('delete-item', item)
+      this.$root.$confirm({
+        title: this.$t('dialogs.deleteConfirmation.title'),
+        message: this.$t('dialogs.deleteConfirmation.details'),
+        affirmativeText: this.$t('text.yes'),
+        negativeText: this.$t('text.no'),
+        color: 'warning'
+      }).then((confirm) => {
+        if (confirm) {
+          this.$emit('delete-item', item)
+        }
+      })
     },
     render (header, item) {
       return header.render ? header.render(item[header.value], header.value, item) : item[header.value]

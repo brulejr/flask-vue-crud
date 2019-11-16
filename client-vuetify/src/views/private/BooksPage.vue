@@ -42,14 +42,8 @@ export default {
   methods: {
     deleteBook (book) {
       console.log('delete book', book)
-      this.$root.$confirm({
-        title: this.$t('dialogs.deleteConfirmation.title'),
-        message: this.$t('dialogs.deleteConfirmation.details'),
-        affirmativeText: this.$t('text.yes'),
-        negativeText: this.$t('text.no'),
-        color: 'warning'
-      }).then((confirm) => {
-        BooksService.deleteBook(book.bookId)
+      BooksService.deleteBook(book.bookId).then(() => {
+        BooksService.findAllBooks()
       })
     }
   },
