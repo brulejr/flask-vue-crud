@@ -1,30 +1,25 @@
 <template>
-  <v-data-table :headers="headers"
-                :items="getBooks"
-                hide-default-footer>
-    <template slot="item" slot-scope="props">
-      <tr>
-        <td>{{ getTitle(props.item) }}</td>
-        <td>{{ getAuthor(props.item) }}</td>
-        <td>{{ getRead(props.item) }}</td>
-        <td>
-          <v-icon small
-                  class="mr-2"
-                  @click="editItem(props.item)">edit</v-icon>
-          <v-icon small
-                  @click="deleteItem(props.item)">delete</v-icon>
-        </td>
-      </tr>
-    </template>
-    <template slot="no-data">{{$t('pages.BooksPage.table.noData')}}</template>
-  </v-data-table>
+  <app-crud :columns="columns"
+            :items="getBooks"
+            :no-data-message="$t('pages.BooksPage.table.noData')"
+            @delete-item="deleteBook">
+  </app-crud>
 </template>
 
 <script>
-import _ from 'lodash'
 import { mapGetters } from 'vuex'
+import { AppCrud } from '@/modules/crud'
 import { DeviceMixin, PageMixin } from '@/modules/core'
 import { BooksService } from '@/modules/books'
+
+function renderMark (value) {
+  return value ? 'X' : ''
+}
+
+function renderOptional (value) {
+  return value || 'n/a'
+}
+
 export default {
   name: 'BooksPage',
   mixins: [
@@ -36,30 +31,30 @@ export default {
   },
   computed: {
     ...mapGetters(['getBooks']),
-    headers () {
+    columns () {
       return [
         { text: this.$t('pages.BooksPage.table.headers.title'), value: 'title' },
-        { text: this.$t('pages.BooksPage.table.headers.author'), value: 'author' },
-        { text: this.$t('pages.BooksPage.table.headers.read'), value: 'read' },
-        { text: this.$t('pages.BooksPage.table.headers.actions'), value: 'action', sortable: false }
+        { text: this.$t('pages.BooksPage.table.headers.author'), value: 'author', render: renderOptional },
+        { text: this.$t('pages.BooksPage.table.headers.read'), value: 'read', render: renderMark }
       ]
     }
   },
   methods: {
-    deleteItem (item) {
-      if (confirm('Are you sure you want to delete this item?')) {
-        console.log('deleting', item)
-      }
-    },
-    getAuthor (item) {
-      return _.get(item, 'author', 'n/a')
-    },
-    getRead (item) {
-      return _.get(item, 'read', 'n/a')
-    },
-    getTitle (item) {
-      return _.get(item, 'title', 'ERROR')
+    deleteBook (book) {
+      console.log('delete book', book)
+      this.$root.$confirm({
+        title: this.$t('dialogs.deleteConfirmation.title'),
+        message: this.$t('dialogs.deleteConfirmation.details'),
+        affirmativeText: this.$t('text.yes'),
+        negativeText: this.$t('text.no'),
+        color: 'warning'
+      }).then((confirm) => {
+        BooksService.deleteBook(book.bookId)
+      })
     }
+  },
+  components: {
+    AppCrud
   }
 }
 </script>

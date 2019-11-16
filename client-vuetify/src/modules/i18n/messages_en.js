@@ -30,6 +30,10 @@ export const messagesEn = {
     title: 'flask-vue-crud'
   },
   dialogs: {
+    deleteConfirmation: {
+      title: 'Delete',
+      details: 'Are you sure you want to delete this item?'
+    },
     logoutConfirmation: {
       title: 'Logout',
       details: 'Are you sure you want to logout?'
