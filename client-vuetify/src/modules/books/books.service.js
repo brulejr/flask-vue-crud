@@ -24,6 +24,8 @@
 import _ from 'lodash'
 
 import CRUD from '@/modules/core/httpCrud'
+import { HTTP } from '@/modules/core/http'
+import format from 'string-format'
 import store from '@/modules/store'
 
 const API = '/api/v1/book/'
@@ -46,6 +48,17 @@ export default {
 
   async findBookById (bookId) {
     return CRUD.findById(API, bookId)
+  },
+
+  async getBookGenres () {
+    try {
+      const http = await HTTP()
+      const response = await http.get(format('{0}/genres', API))
+      const genres = _.get(response.data, 'genres')
+      store.commit('setBookGenres', genres)
+    } catch (error) {
+      throw error.message
+    }
   },
 
   async updateBook (book) {

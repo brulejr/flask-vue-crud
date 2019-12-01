@@ -24,17 +24,22 @@
 
 const state = {
   books: [],
+  genres: [],
   selectedBook: undefined
 }
 
 const getters = {
   getBooks: state => state.books,
+  getBookGenres: state => state.genres,
   getSelectedBook: state => state.selectedBook
 }
 
 const mutations = {
   setBooks: (state, books) => {
     state.books = books
+  },
+  setBookGenres: (state, genres) => {
+    state.genres = genres
   },
   setSelectedBook: (state, book) => {
     state.selectedBook = book

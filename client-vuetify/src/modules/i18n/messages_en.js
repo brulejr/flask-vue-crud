@@ -46,10 +46,24 @@ export const messagesEn = {
   pages: {
     BooksPage: {
       title: 'Books',
+      form: {
+        fields: {
+          author: {
+            label: 'Author'
+          },
+          genre: {
+            label: 'Genre'
+          },
+          title: {
+            label: 'Title'
+          }
+        }
+      },
       table: {
         headers: {
           actions: 'Actions',
           author: 'Author',
+          genre: 'Genre',
           read: 'Read?',
           title: 'Title'
         },
