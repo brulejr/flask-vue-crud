@@ -9,16 +9,21 @@ book = api.model('Book', {
     'bookId': fields.String(required=True, description='The book identifier'),
     'title': fields.String(required=True, description='The book title'),
     'author': fields.String(required=True, description='The book author'),
+    'genre': fields.String(required=True, description='The book genre'),
     'read': fields.Boolean(required=False, description='The book read flag')
 })
 bookList = api.model('BookList', {
     'books': fields.Nested(book, description='Array of book')
+})
+genreList = api.model('GenreList', {
+    'genres': fields.List(fields.String(description="A book genre"))
 })
 
 
 parser = api.parser()
 parser.add_argument('title', type=str, required=True, help='Title for the book', location='json')
 parser.add_argument('author', type=str, required=True, help='Author for the book', location='json')
+parser.add_argument('genre', type=str, required=True, help='Genre for the book', location='json')
 parser.add_argument('read', type=bool, required=False, help='Read flag for the book', location='json')
 
 
@@ -40,6 +45,7 @@ class BookList(Resource):
         added_book = book_service.add_book(
             title=args['title'],
             author=args['author'],
+            genre=args['genre'],
             read=args['read']
         )
         return added_book, 201
@@ -78,3 +84,15 @@ class Book(Resource):
             return updated_book, 201
         except BookNotFoundException:
             api.abort(404, message="Book {} doesn't exist".format(bookId))
+
+
+@book_v1_ns.route('/genres')
+class GenreList(Resource):
+
+    @api.doc(description='Get a list of unique genres within the books')
+    @api.marshal_list_with(genreList)
+    @token_required
+    def get(self, current_user):
+        genre_list = book_service.get_genres()
+        return {'genres': genre_list}
+
